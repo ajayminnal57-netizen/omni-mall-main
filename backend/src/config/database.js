@@ -3,6 +3,6 @@ import { env } from "./env.js";
 
 export const connectDatabase = async () => {
   mongoose.set("strictQuery", true);
-  await mongoose.connect(env.mongoUri);
+  await mongoose.connect(env.mongoUri, { dbName: env.mongoDatabase });
   console.info("MongoDB connected.");
 };

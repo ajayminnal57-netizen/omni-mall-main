@@ -6,25 +6,33 @@ import Product from "../models/Product.js";
 import User from "../models/User.js";
 
 const run = async () => {
-    await mongoose.connect(env.mongoUri);
+    await mongoose.connect(env.mongoUri, { dbName: env.mongoDatabase });
 
-    if (!process.env.ADMIN_EMAIL || !process.env.ADMIN_PASSWORD || process.env.ADMIN_PASSWORD.length < 12) {
-        throw new Error("Set ADMIN_EMAIL and an ADMIN_PASSWORD of at least 12 characters in backend/.env.");
+    const email = process.env.ADMIN_EMAIL?.trim().toLowerCase();
+    const password = process.env.ADMIN_PASSWORD;
+    if (Boolean(email) !== Boolean(password)) {
+        throw new Error("Set both ADMIN_EMAIL and ADMIN_PASSWORD to create an admin account.");
+    }
+    if (email && password.length < 12) {
+        throw new Error("ADMIN_PASSWORD must contain at least 12 characters.");
     }
 
-    const email = process.env.ADMIN_EMAIL.toLowerCase();
-    const existingAdmin = await User.findOne({ email });
-    if (existingAdmin && existingAdmin.role !== "admin") {
-        throw new Error("ADMIN_EMAIL already belongs to a non-admin account; choose another email.");
-    }
-    if (!existingAdmin) {
-        await User.create({
-            username: "omni-admin",
-            email,
-            passwordHash: await bcrypt.hash(process.env.ADMIN_PASSWORD, 12),
-            role: "admin",
-        });
-        console.info("Admin account created from environment credentials.");
+    if (email) {
+        const existingAdmin = await User.findOne({ email });
+        if (existingAdmin && existingAdmin.role !== "admin") {
+            throw new Error("ADMIN_EMAIL already belongs to a non-admin account; choose another email.");
+        }
+        if (!existingAdmin) {
+            await User.create({
+                username: "omni-admin",
+                email,
+                passwordHash: await bcrypt.hash(password, 12),
+                role: "admin",
+            });
+            console.info("Admin account created from environment credentials.");
+        }
+    } else {
+        console.info("Admin account creation skipped; no admin credentials configured.");
     }
 
     if (await Product.countDocuments() === 0) {

@@ -12,8 +12,9 @@ import { errorHandler, notFound } from "./middleware/errorHandler.js";
 import { sendSuccess } from "./utils/response.js";
 
 const app = express();
+const allowedOrigins = env.frontendOrigin.split(",").map((origin) => origin.trim()).filter(Boolean);
 app.use(helmet());
-app.use(cors({ origin: env.frontendOrigin, credentials: true }));
+app.use(cors({ origin: allowedOrigins, credentials: true }));
 app.use(express.json({ limit: "32kb" }));
 app.use(cookieParser());
 app.use("/api", rateLimit({ windowMs: 15 * 60 * 1000, limit: 300, standardHeaders: "draft-8", legacyHeaders: false }));

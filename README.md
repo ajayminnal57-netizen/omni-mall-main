@@ -17,9 +17,9 @@ Omni Mall is a Next.js storefront backed by an Express API and MongoDB. The API 
 	Copy-Item .env.example .env
 	```
 
-	Set `MONGODB_URI`, a random `JWT_SECRET` of at least 32 characters, and unique `ADMIN_EMAIL`/`ADMIN_PASSWORD` values in `backend/.env`. The seed command requires the admin password to be at least 12 characters.
+	Set `MONGODB_URI` and a random `JWT_SECRET` of at least 32 characters in `backend/.env`. To create an admin during seeding, also set a unique `ADMIN_EMAIL` and an `ADMIN_PASSWORD` of at least 12 characters; both are optional for catalog-only seeding.
 
-2. With MongoDB running, import the starter catalog and create the configured admin account:
+2. With MongoDB running, import the starter catalog and, if configured, create the admin account:
 
 	```powershell
 	cd backend
@@ -42,7 +42,7 @@ Omni Mall is a Next.js storefront backed by an Express API and MongoDB. The API 
 	npm run dev
 	```
 
-	The default API URL is `http://localhost:4000/api/v1`. Set `NEXT_PUBLIC_API_URL` in `Frontend/.env.local` to override it. `FRONTEND_ORIGIN` on the backend must match the frontend origin.
+	The default API URL is `http://localhost:4000/api/v1`. Set `NEXT_PUBLIC_API_URL` in `Frontend/.env.local` to override it. `FRONTEND_ORIGIN` on the backend must contain the allowed frontend origin or a comma-separated list of local origins.
 
 ## API
 
