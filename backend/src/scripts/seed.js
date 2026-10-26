@@ -14,8 +14,8 @@ const run = async () => {
     if (Boolean(email) !== Boolean(password)) {
         throw new Error("Set both ADMIN_EMAIL and ADMIN_PASSWORD to create an admin account.");
     }
-    if (email && password.length < 12) {
-        throw new Error("ADMIN_PASSWORD must contain at least 12 characters.");
+    if (email && password.length < 8) {
+        throw new Error("ADMIN_PASSWORD must contain at least 8 characters.");
     }
 
     if (email) {

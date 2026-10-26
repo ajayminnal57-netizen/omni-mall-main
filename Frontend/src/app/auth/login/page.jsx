@@ -20,8 +20,8 @@ const Page = () => {
   const onSubmit = async (values) => {
     setAuthMessage("");
     try {
-      await signIn({ identity: values.userName, password: values.password });
-      router.push("/account");
+      const user = await signIn({ identity: values.userName, password: values.password });
+      router.push(user.role === "admin" ? "/admin" : "/account");
     } catch (error) {
       setAuthMessage(error.message);
     }

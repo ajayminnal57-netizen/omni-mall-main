@@ -40,7 +40,7 @@ const Header = () => {
 
             <nav aria-label="Account and shopping" className="nav-actions flex shrink-0 items-center gap-1 sm:gap-2 md:gap-4">
                 <Link
-                    href={user ? "/account" : "/auth/login"}
+                    href={user ? (user.role === "admin" ? "/admin" : "/account") : "/auth/login"}
                     aria-label="Your account"
                     className="flex size-9 items-center justify-center rounded-full border border-black/20 bg-black/30 text-amber-50 backdrop-blur-md transition hover:bg-white hover:text-gray-800 sm:size-11"
                 >
