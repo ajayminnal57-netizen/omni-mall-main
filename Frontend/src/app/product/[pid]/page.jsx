@@ -5,8 +5,10 @@ import Header from '@/app/component/common/Header';
 import ProductDetailCard from '@/app/component/product/ProductDetailCard';
 import ReviewComments from '@/app/component/product/ReviewComments';
 import { notFound } from 'next/navigation';
+import { connection } from 'next/server';
 
 const Page = async ({ params }) => {
+    await connection();
     const { pid } = await params;
 
     let product;

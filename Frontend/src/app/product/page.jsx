@@ -1,10 +1,12 @@
 
 import React from 'react';
+import { connection } from 'next/server';
 import { fetchProducts } from '../services/api';
 import Header from '../component/common/Header';
 import ProductCatalog from '../component/product/ProductCatalog';
 
 const Page = async ({ searchParams }) => {
+    await connection();
     const params = await searchParams;
     let products = [];
     let loadError = false;

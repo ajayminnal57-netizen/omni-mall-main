@@ -1,4 +1,5 @@
 const CART_STORAGE_KEY = 'omni-mall-cart';
+const CART_OWNER_KEY = 'omni-mall-cart-owner';
 const CART_CHANGE_EVENT = 'omni-mall-cart-change';
 
 export const getCartSnapshot = () => {
@@ -27,6 +28,16 @@ export const subscribeToCart = (callback) => {
 
 export const readCart = () => {
     return parseCartSnapshot(getCartSnapshot());
+};
+
+export const getCartOwner = () => (
+    typeof window === 'undefined' ? null : window.localStorage.getItem(CART_OWNER_KEY)
+);
+
+export const setCartOwner = (userId) => {
+    if (typeof window === 'undefined') return;
+    if (userId) window.localStorage.setItem(CART_OWNER_KEY, userId);
+    else window.localStorage.removeItem(CART_OWNER_KEY);
 };
 
 const writeCart = (cart) => {

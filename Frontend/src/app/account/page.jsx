@@ -33,7 +33,7 @@ export default function AccountPage() {
         return () => { active = false; };
     }, [user]);
 
-    const updateProfile = async ({ username }) => {
+    const saveProfile = async ({ username }) => {
         setMessage("");
         try {
             await updateProfile({ username });
@@ -79,7 +79,7 @@ export default function AccountPage() {
                         <div className="grid gap-12 lg:grid-cols-[320px_minmax(0,1fr)]">
                             <section>
                                 <h2 className="text-xl font-medium">Profile</h2>
-                                <form onSubmit={handleSubmit(updateProfile)} className="mt-5 space-y-4">
+                                <form onSubmit={handleSubmit(saveProfile)} className="mt-5 space-y-4">
                                     <label className="block text-sm text-stone-700">
                                         Username
                                         <input {...register("username", { required: "Username is required", minLength: { value: 3, message: "Use at least 3 characters." } })} className="mt-2 w-full border border-stone-300 bg-white px-4 py-3 outline-none focus:border-stone-700" />
