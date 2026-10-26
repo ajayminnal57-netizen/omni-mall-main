@@ -10,6 +10,7 @@ const run = async () => {
 
     const email = process.env.ADMIN_EMAIL?.trim().toLowerCase();
     const password = process.env.ADMIN_PASSWORD;
+    const username = process.env.ADMIN_USERNAME?.trim().toLowerCase() || "admin";
     if (Boolean(email) !== Boolean(password)) {
         throw new Error("Set both ADMIN_EMAIL and ADMIN_PASSWORD to create an admin account.");
     }
@@ -23,8 +24,11 @@ const run = async () => {
             throw new Error("ADMIN_EMAIL already belongs to a non-admin account; choose another email.");
         }
         if (!existingAdmin) {
+            if (await User.exists({ username })) {
+                throw new Error("ADMIN_USERNAME is already in use; choose another username.");
+            }
             await User.create({
-                username: "omni-admin",
+                username,
                 email,
                 passwordHash: await bcrypt.hash(password, 12),
                 role: "admin",
