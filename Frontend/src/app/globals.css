@@ -1,0 +1,116 @@
+@import "tailwindcss";
+
+@theme {
+  --font-sans: "Noto Kufi Arabic", sans-serif;
+}
+
+:root {
+  font-size: 17px;
+}
+
+html {
+  font-size: 17px;
+}
+
+body {
+  font-family: var(--font-sans);
+  font-optical-sizing: auto;
+  font-style: normal;
+  background-color: black;
+  font-size: 1rem;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+p,
+span,
+label,
+input,
+button,
+small,
+strong,
+li,
+a,
+div {
+  font-size: inherit;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  line-height: 1.15;
+}
+
+input::placeholder {
+  font-size: 0.95rem;
+}
+
+::-webkit-scrollbar {
+  display: none;
+}
+
+@supports (animation-timeline: view()) {
+  .gallery-card {
+    animation: gallery-card-reveal linear both;
+    animation-timeline: view();
+    animation-range: entry 0% entry 35%;
+  }
+
+  @keyframes gallery-card-reveal {
+    from {
+      opacity: 0.55;
+      transform: translateY(32px) scale(0.985);
+    }
+
+    to {
+      opacity: 1;
+      transform: translateY(0) scale(1);
+    }
+  }
+}
+
+.mousefollower {
+  border-radius: 50%;
+  height: 16px;
+  left: 0;
+  mix-blend-mode: difference;
+  opacity: 0;
+  pointer-events: none;
+  position: fixed;
+  top: 0;
+  transform: translate(-50%, -50%);
+  transition: left 0.08s linear, top 0.08s linear, opacity 0.2s ease;
+  width: 16px;
+  z-index: 99999;
+}
+
+#behindmouse {
+  background-color: #fff;
+  height: 36px;
+  width: 36px;
+  z-index: 99998;
+  transition-duration: 0.22s, 0.22s, 0.2s;
+  transition-timing-function: cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .gallery-card,
+  .gallery-card img {
+    animation: none !important;
+    transition-duration: 0.01ms !important;
+  }
+
+  .mousefollower {
+    display: none !important;
+  }
+}
+
+@media (hover: none), (pointer: coarse) {
+  .mousefollower {
+    display: none !important;
+  }
+}
