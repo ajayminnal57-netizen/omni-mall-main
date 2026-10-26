@@ -4,6 +4,8 @@ import Header from "@/app/component/common/Header";
 import Link from "next/link";
 import React, { useState } from "react";
 import { useForm } from "react-hook-form";
+import { useRouter } from "next/navigation";
+import { useAuth } from "@/app/services/AuthProvider";
 
 const Page = () => {
   const {
@@ -12,9 +14,17 @@ const Page = () => {
     formState: { errors, isSubmitting },
   } = useForm();
   const [authMessage, setAuthMessage] = useState("");
+  const router = useRouter();
+  const { signUp } = useAuth();
 
-  const onSubmit = () => {
-    setAuthMessage("Account creation is unavailable until an authentication provider is configured.");
+  const onSubmit = async (values) => {
+    setAuthMessage("");
+    try {
+      await signUp({ username: values.userName, email: values.emailId, password: values.password });
+      router.push("/account");
+    } catch (error) {
+      setAuthMessage(error.message);
+    }
   };
 
   return (

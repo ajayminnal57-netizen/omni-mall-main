@@ -1,6 +1,6 @@
 
 import React from 'react';
-import { fetchProducts } from '@/app/services/api';
+import { fetchProduct } from '@/app/services/api';
 import Header from '@/app/component/common/Header';
 import ProductDetailCard from '@/app/component/product/ProductDetailCard';
 import ReviewComments from '@/app/component/product/ReviewComments';
@@ -9,18 +9,14 @@ import { notFound } from 'next/navigation';
 const Page = async ({ params }) => {
     const { pid } = await params;
 
-    let products = [];
+    let product;
 
     try {
-        products = await fetchProducts();
+        product = await fetchProduct(pid);
     } catch (error) {
         console.error('Failed to load product details:', error);
         throw error;
     }
-
-    const product = products.find(
-        (item) => String(item.id) === String(pid)
-    );
 
     if (!product) {
         notFound();

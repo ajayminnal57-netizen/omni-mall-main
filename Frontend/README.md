@@ -9,12 +9,12 @@ npm install
 npm run dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000).
+The frontend runs at [http://localhost:3000](http://localhost:3000). Configure and start the API first; setup instructions and API routes are in the repository [README](../README.md).
 
-### Product data
+### API URL
 
-The storefront currently reads product data from the public DummyJSON products API. An internet connection is required to load the catalog.
+The frontend defaults to `http://localhost:4000/api/v1`. Set `NEXT_PUBLIC_API_URL` in `.env.local` to use another API origin.
 
-### Checkout limitations
+### Checkout
 
-Checkout is a local demo flow. It does not charge a payment method, submit an order to a server, or persist order history. Connect a trusted payment provider and order API before accepting real orders. The login and signup pages are presentation-only until an authentication provider is configured.
+Checkout requires an account and records orders using server-verified prices and stock. It does not process payments; configure a trusted payment provider before accepting payment details or treating orders as paid.

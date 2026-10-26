@@ -4,6 +4,8 @@ import Header from "@/app/component/common/Header";
 import Link from "next/link";
 import React, { useState } from "react";
 import { useForm } from "react-hook-form";
+import { useRouter } from "next/navigation";
+import { useAuth } from "@/app/services/AuthProvider";
 
 const Page = () => {
   const {
@@ -12,9 +14,17 @@ const Page = () => {
     formState: { errors, isSubmitting },
   } = useForm();
   const [authMessage, setAuthMessage] = useState("");
+  const router = useRouter();
+  const { signIn } = useAuth();
 
-  const onSubmit = () => {
-    setAuthMessage("Sign-in is unavailable until an authentication provider is configured.");
+  const onSubmit = async (values) => {
+    setAuthMessage("");
+    try {
+      await signIn({ identity: values.userName, password: values.password });
+      router.push("/account");
+    } catch (error) {
+      setAuthMessage(error.message);
+    }
   };
 
   return (
@@ -36,7 +46,7 @@ const Page = () => {
               htmlFor="userName"
               className="font-semibold text-gray-500"
             >
-              Username
+              Username or email
             </label>
 
             <input
@@ -90,7 +100,7 @@ const Page = () => {
             disabled={isSubmitting}
             className="h-11 w-full rounded-3xl bg-[#50b863] px-4 font-semibold capitalize text-white transition-colors hover:bg-[#419e52] disabled:cursor-not-allowed disabled:opacity-60"
           >
-            {isSubmitting ? "Logging in..." : "Submit"}
+            {isSubmitting ? "Logging in..." : "Log in"}
           </button>
 
           {authMessage && (

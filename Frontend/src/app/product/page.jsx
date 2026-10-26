@@ -10,7 +10,7 @@ const Page = async ({ searchParams }) => {
     let loadError = false;
 
     try {
-        products = await fetchProducts();
+        products = await fetchProducts({ q: params?.q, category: params?.category });
     } catch (error) {
         console.error('Failed to load product catalog:', error);
         loadError = true;

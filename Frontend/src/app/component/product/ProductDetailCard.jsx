@@ -1,12 +1,32 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { addToCart } from "@/app/services/cart";
+import { useAuth } from "@/app/services/AuthProvider";
+import { apiRequest } from "@/app/services/api";
 
 const ProductDetailCard = ({ product }) => {
     const [imagePreview, setImagePreview] = useState(product.thumbnail);
+    const [savedByUser, setSavedByUser] = useState(null);
+    const [wishlistMessage, setWishlistMessage] = useState("");
     const router = useRouter();
+    const { user } = useAuth();
+    const saved = Boolean(user && savedByUser?.userId === String(user._id) && savedByUser?.productId === String(product.id));
+
+    useEffect(() => {
+        if (!user) return undefined;
+        let active = true;
+        apiRequest("/wishlist")
+            .then((data) => {
+                if (active && data.products.some((item) => String(item.id) === String(product.id))) {
+                    setSavedByUser({ userId: String(user._id), productId: String(product.id) });
+                }
+            })
+            .catch(() => {})
+            .finally(() => { if (active) setWishlistMessage(""); });
+        return () => { active = false; };
+    }, [product.id, user]);
 
     const handleAddToCart = () => {
         addToCart(product);
@@ -16,6 +36,20 @@ const ProductDetailCard = ({ product }) => {
     const handleBuyNow = () => {
         addToCart(product);
         router.push("/checkout");
+    };
+
+    const toggleWishlist = async () => {
+        if (!user) {
+            router.push("/auth/login");
+            return;
+        }
+        setWishlistMessage("");
+        try {
+            await apiRequest(`/wishlist/${product.id}`, { method: saved ? "DELETE" : "POST" });
+            setSavedByUser(saved ? null : { userId: String(user._id), productId: String(product.id) });
+        } catch (error) {
+            setWishlistMessage(error.message);
+        }
     };
 
     return (
@@ -113,6 +147,11 @@ const ProductDetailCard = ({ product }) => {
                                 <i className="fa-solid fa-cart-plus px-2" aria-hidden="true" />
                             </button>
                         </div>
+                        <button type="button" onClick={toggleWishlist} className="inline-flex w-fit items-center gap-2 py-2 text-sm text-stone-700 transition hover:text-stone-950" aria-pressed={saved}>
+                            <i className={saved ? "fa-solid fa-heart text-red-700" : "fa-regular fa-heart"} aria-hidden="true" />
+                            {saved ? "Saved to wishlist" : "Save to wishlist"}
+                        </button>
+                        {wishlistMessage && <p className="text-sm text-red-700" role="alert">{wishlistMessage}</p>}
                         {product.stock <= 0 && (
                             <p className="text-sm font-medium text-red-700" role="status">This item is currently out of stock.</p>
                         )}

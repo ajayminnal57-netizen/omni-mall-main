@@ -4,10 +4,12 @@ import Image from "next/image";
 import Link from "next/link";
 import { useSyncExternalStore } from "react";
 import { getCartSnapshot, parseCartSnapshot, subscribeToCart } from "../../services/cart";
+import { useAuth } from "../../services/AuthProvider";
 
 const Header = () => {
     const snapshot = useSyncExternalStore(subscribeToCart, getCartSnapshot, () => "[]");
     const itemCount = parseCartSnapshot(snapshot).reduce((total, item) => total + item.quantity, 0);
+    const { user } = useAuth();
 
     return (
         <header className="relative z-20 flex w-full items-center justify-around px-3 py-4 text-white sm:px-5 sm:py-5 md:px-8">
@@ -38,11 +40,11 @@ const Header = () => {
 
             <nav aria-label="Account and shopping" className="nav-actions flex shrink-0 items-center gap-1 sm:gap-2 md:gap-4">
                 <Link
-                    href="/auth/login"
+                    href={user ? "/account" : "/auth/login"}
                     aria-label="Your account"
                     className="flex size-9 items-center justify-center rounded-full border border-black/20 bg-black/30 text-amber-50 backdrop-blur-md transition hover:bg-white hover:text-gray-800 sm:size-11"
                 >
-                    <i className="fa-regular fa-circle-user" aria-hidden="true" />
+                    <i className={user ? "fa-solid fa-circle-user" : "fa-regular fa-circle-user"} aria-hidden="true" />
                 </Link>
                 <Link
                     href="/cart"

@@ -69,3 +69,5 @@ export const removeFromCart = (productId) => (
 );
 
 export const clearCart = () => writeCart([]);
+
+export const replaceCart = (cart) => writeCart(cart);

@@ -5,6 +5,7 @@ import SmoothScroll from "./component/common/SmoothScroll";
 import MouseFollower from "./component/common/MouseFollower";
 import Header from "./component/common/Header";
 import Footer from "./component/common/Footer";
+import { AuthProvider } from "./services/AuthProvider";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -44,11 +45,12 @@ export default function RootLayout({ children }) {
         />
       </head>
       <body className="flex min-h-full flex-col">
-        <SmoothScroll />
-        <MouseFollower />
-        {/* <Header/> */}
-        {children}
-        <Footer />
+        <AuthProvider>
+          <SmoothScroll />
+          <MouseFollower />
+          {children}
+          <Footer />
+        </AuthProvider>
       </body>
     </html>
   );
