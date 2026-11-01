@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import { addToCart } from "@/app/services/cart";
 import { useAuth } from "@/app/services/AuthProvider";
 import { apiRequest } from "@/app/services/api";
+import { formatInr } from "@/app/services/currency";
 
 const ProductDetailCard = ({ product }) => {
     const [imagePreview, setImagePreview] = useState(product.thumbnail);
@@ -100,7 +101,7 @@ const ProductDetailCard = ({ product }) => {
                             <span className="mr-2 text-[1rem] font-medium text-red-500">
                                 -{product.discountPercentage}%
                             </span>
-                            <span>{product.price} $</span>
+                            <span>{formatInr(product.price * 10)}</span>
                         </div>
 
                         <p className="text-[0.9rem] font-bold capitalize text-gray-800">

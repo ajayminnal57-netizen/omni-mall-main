@@ -2,10 +2,13 @@ import app from "./app.js";
 import { connectDatabase } from "./config/database.js";
 import { env } from "./config/env.js";
 
-try {
-  await connectDatabase();
-  app.listen(env.port, () => console.info(`Omni Mall API listening on port ${env.port}.`));
-} catch (error) {
-  console.error("Unable to start the API:", error.message);
-  process.exitCode = 1;
-}
+const server = app.listen(env.port, "0.0.0.0", async () => {
+  console.info(`Omni Mall API listening on port ${env.port}.`);
+
+  try {
+    await connectDatabase();
+    console.info("MongoDB connected successfully.");
+  } catch (error) {
+    console.error("MongoDB connection failed:", error.message);
+  }
+});

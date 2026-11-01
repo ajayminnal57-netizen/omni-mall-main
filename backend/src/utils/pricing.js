@@ -1,5 +1,7 @@
-export const SHIPPING_THRESHOLD_CENTS = 10000;
-export const SHIPPING_FEE_CENTS = 895;
+import { usdCentsToInrPaise } from "./currency.js";
+
+export const SHIPPING_THRESHOLD_CENTS = usdCentsToInrPaise(10000);
+export const SHIPPING_FEE_CENTS = usdCentsToInrPaise(895);
 export const TAX_RATE = 0.08;
 
 export const calculateOrderTotals = (items, products) => {

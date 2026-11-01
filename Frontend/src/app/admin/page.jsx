@@ -6,8 +6,7 @@ import { useRouter } from "next/navigation";
 import Header from "../component/common/Header";
 import { useAuth } from "../services/AuthProvider";
 import { apiRequest } from "../services/api";
-
-const formatPrice = (cents) => `$${(cents / 100).toFixed(2)}`;
+import { formatInrPaise } from "../services/currency";
 
 const loadDashboard = async () => {
     const [summary, orderData] = await Promise.all([
@@ -99,7 +98,7 @@ export default function AdminPage() {
                                         ["Active products", dashboard.summary.products],
                                         ["Customers", dashboard.summary.customers],
                                         ["Orders", dashboard.summary.orders],
-                                        ["Recorded revenue", formatPrice(dashboard.summary.revenueCents)],
+                                        ["Recorded revenue", formatInrPaise(dashboard.summary.revenueCents)],
                                     ].map(([label, value]) => (
                                         <div key={label} className="border-b border-r border-stone-300 px-4 py-5 last:border-r-0 sm:border-b-0 sm:px-6">
                                             <p className="text-xs uppercase tracking-[0.16em] text-stone-500">{label}</p>
@@ -131,7 +130,7 @@ export default function AdminPage() {
                                                             <td className="py-4 pr-4 font-medium">{order._id.slice(-8).toUpperCase()}</td>
                                                             <td className="py-4 pr-4">{order.user?.username || order.shippingAddress.name}</td>
                                                             <td className="py-4 pr-4 text-stone-600">{new Date(order.createdAt).toLocaleDateString()}</td>
-                                                            <td className="py-4 pr-4 tabular-nums">{formatPrice(order.totalCents)}</td>
+                                                            <td className="py-4 pr-4 tabular-nums">{formatInrPaise(order.totalCents)}</td>
                                                             <td className="py-4">
                                                                 <select
                                                                     value={order.status}

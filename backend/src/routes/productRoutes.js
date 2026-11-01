@@ -9,3 +9,7 @@ router.get("/", validate(productListSchema), getProducts);
 router.get("/:id", validate(idParamSchema), getProduct);
 
 export default router;
+
+
+
+

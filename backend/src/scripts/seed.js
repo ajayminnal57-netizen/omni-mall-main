@@ -4,6 +4,7 @@ import { env } from "../config/env.js";
 import Category from "../models/Category.js";
 import Product from "../models/Product.js";
 import User from "../models/User.js";
+import { USD_TO_INR_RATE, indiaMarketPriceFromUsd } from "../utils/currency.js";
 
 const run = async () => {
     await mongoose.connect(env.mongoUri, { dbName: env.mongoDatabase });
@@ -60,7 +61,7 @@ const run = async () => {
             description: product.description,
             brand: product.brand ?? "",
             category: categoryIds.get(product.category),
-            price: product.price,
+            price: indiaMarketPriceFromUsd(product.price, product.category),
             stock: product.stock,
             thumbnail: product.thumbnail,
             images: product.images ?? [],
@@ -77,6 +78,24 @@ const run = async () => {
                 date: review.date,
             })),
         })));
+        const database = mongoose.connection.db;
+        try {
+            await database.createCollection("schema_migrations");
+        } catch (error) {
+            if (error.codeName !== "NamespaceExists") throw error;
+        }
+        await database.collection("schema_migrations").updateOne(
+            { _id: "india-market-estimates-inr-v4" },
+            {
+                $setOnInsert: {
+                    exchangeRate: USD_TO_INR_RATE,
+                    appliedAt: new Date(),
+                    seededInInr: true,
+                    pricingModel: "category-market-estimate",
+                },
+            },
+            { upsert: true },
+        );
         console.info(`Imported ${products.length} products and their categories.`);
     } else {
         console.info("Product collection is not empty; skipping catalog import.");

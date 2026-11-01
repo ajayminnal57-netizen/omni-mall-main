@@ -12,8 +12,12 @@ import {
     parseCartSnapshot,
     subscribeToCart,
 } from "../services/cart";
-
-const formatPrice = (price) => `$${Number(price).toFixed(2)}`;
+import {
+    formatInr,
+    formatInrPaise,
+    SHIPPING_FEE_INR,
+    SHIPPING_THRESHOLD_INR,
+} from "../services/currency";
 
 export default function CheckoutPage() {
     const snapshot = useSyncExternalStore(subscribeToCart, getCartSnapshot, () => "[]");
@@ -27,7 +31,7 @@ export default function CheckoutPage() {
         formState: { errors, isSubmitting },
     } = useForm({ values: { name: user?.username ?? "", email: user?.email ?? "" } });
     const subtotal = items.reduce((total, item) => total + item.price * item.quantity, 0);
-    const shipping = subtotal >= 100 || subtotal === 0 ? 0 : 8.95;
+    const shipping = subtotal >= SHIPPING_THRESHOLD_INR || subtotal === 0 ? 0 : SHIPPING_FEE_INR;
     const estimatedTax = subtotal * 0.08;
 
     const placeOrder = async (values) => {
@@ -50,7 +54,7 @@ export default function CheckoutPage() {
                     quantity: item.quantity,
                     price: item.unitPriceCents / 100,
                 })),
-                total: created.totalCents / 100,
+                totalCents: created.totalCents,
                 reference: `OM-${created._id.slice(-8).toUpperCase()}`,
             });
             clearCart();
@@ -81,12 +85,12 @@ export default function CheckoutPage() {
                             {order.items.map((item) => (
                                 <div key={item.id} className="flex justify-between gap-4 py-3 text-sm">
                                     <span>{item.title} × {item.quantity}</span>
-                                    <span>{formatPrice(item.price * item.quantity)}</span>
+                                    <span>{formatInr(item.price * item.quantity)}</span>
                                 </div>
                             ))}
                             <div className="flex justify-between py-4 font-semibold">
                                 <span>Estimated total</span>
-                                <span>{formatPrice(order.total)}</span>
+                                <span>{formatInrPaise(order.totalCents)}</span>
                             </div>
                         </div>
                         <Link href="/product" className="mt-8 inline-flex items-center gap-3 rounded-3xl bg-gray-950 px-6 py-3 text-sm font-medium text-white transition hover:bg-stone-700">
@@ -175,17 +179,17 @@ export default function CheckoutPage() {
                                         {items.map((item) => (
                                             <div key={item.id} className="flex justify-between gap-4 py-4 text-sm">
                                                 <span className="text-stone-700">{item.title} × {item.quantity}</span>
-                                                <span className="shrink-0 font-medium">{formatPrice(item.price * item.quantity)}</span>
+                                                <span className="shrink-0 font-medium">{formatInr(item.price * item.quantity)}</span>
                                             </div>
                                         ))}
                                     </div>
                                     <div className="mt-5 space-y-3 border-b border-stone-300 pb-5 text-sm">
-                                        <div className="flex justify-between"><span className="text-stone-600">Subtotal</span><span>{formatPrice(subtotal)}</span></div>
-                                        <div className="flex justify-between"><span className="text-stone-600">Shipping</span><span>{shipping === 0 ? "Free" : formatPrice(shipping)}</span></div>
-                                        <div className="flex justify-between"><span className="text-stone-600">Estimated tax</span><span>{formatPrice(estimatedTax)}</span></div>
+                                        <div className="flex justify-between"><span className="text-stone-600">Subtotal</span><span>{formatInr(subtotal)}</span></div>
+                                        <div className="flex justify-between"><span className="text-stone-600">Shipping</span><span>{shipping === 0 ? "Free" : formatInr(shipping)}</span></div>
+                                        <div className="flex justify-between"><span className="text-stone-600">Estimated tax</span><span>{formatInr(estimatedTax)}</span></div>
                                     </div>
                                     <div className="mt-5 flex justify-between font-semibold">
-                                        <span>Total</span><span>{formatPrice(subtotal + shipping + estimatedTax)}</span>
+                                        <span>Total</span><span>{formatInr(subtotal + shipping + estimatedTax)}</span>
                                     </div>
                                     <p className="mt-3 text-xs leading-5 text-stone-500">Final totals are recalculated from current product prices and stock when submitted.</p>
                                 </aside>
