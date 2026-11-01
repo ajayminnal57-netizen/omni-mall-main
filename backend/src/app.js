@@ -24,10 +24,10 @@ app.use("/api/v1/auth", authRoutes);
 app.use("/api/v1/products", productRoutes);
 app.use("/api/v1", commerceRoutes);
 app.use("/api/v1/admin", adminRoutes);
+app.get("/", (_req, res) => {
+  res.send("api is working");
+});
 app.use(notFound);
 app.use(errorHandler);
-app.get("/",(req,res)=>{
-    res.send("api is working")
-})
 
 export default app;
