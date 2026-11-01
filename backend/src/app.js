@@ -26,5 +26,8 @@ app.use("/api/v1", commerceRoutes);
 app.use("/api/v1/admin", adminRoutes);
 app.use(notFound);
 app.use(errorHandler);
+app.get("/",(req,res)=>{
+    res.send("api is working")
+})
 
 export default app;
