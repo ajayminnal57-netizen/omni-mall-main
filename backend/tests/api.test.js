@@ -7,6 +7,13 @@ import { createId, readStore, updateStore } from "../src/services/jsonStore.js";
 process.env.JWT_SECRET ??= "test-secret-that-is-at-least-32-characters-long";
 const { default: app } = await import("../src/app.js");
 
+test("root endpoint confirms the API is working", async () => {
+  const response = await request(app).get("/");
+
+  assert.equal(response.status, 200);
+  assert.equal(response.text, "api is working");
+});
+
 test("health endpoint returns the standard success envelope", async () => {
   const response = await request(app).get("/api/v1/health");
 

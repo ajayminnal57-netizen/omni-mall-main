@@ -10,8 +10,7 @@ import {
     setCartItemQuantity,
     subscribeToCart,
 } from "../services/cart";
-
-const formatPrice = (price) => `$${Number(price).toFixed(2)}`;
+import { formatInr } from "../services/currency";
 
 export default function CartPage() {
     const snapshot = useSyncExternalStore(subscribeToCart, getCartSnapshot, () => "[]");
@@ -73,7 +72,7 @@ export default function CartPage() {
                                             <Link href={`/product/${item.id}`} className="mt-1 block font-medium leading-snug hover:underline">
                                                 {item.title}
                                             </Link>
-                                            <p className="mt-2 text-sm text-stone-600">{formatPrice(item.price)} each</p>
+                                            <p className="mt-2 text-sm text-stone-600">{formatInr(item.price)} each</p>
                                         </div>
 
                                         <div className="flex items-center justify-between gap-5 sm:flex-col sm:items-end sm:gap-3">
@@ -98,7 +97,7 @@ export default function CartPage() {
                                                 </button>
                                             </div>
                                             <div className="flex items-center gap-4">
-                                                <span className="font-medium tabular-nums">{formatPrice(item.price * item.quantity)}</span>
+                                                <span className="font-medium tabular-nums">{formatInr(item.price * item.quantity)}</span>
                                                 <button
                                                     type="button"
                                                     onClick={() => removeItem(item.id)}
@@ -118,7 +117,7 @@ export default function CartPage() {
                             <h2 className="text-xl font-medium">Order summary</h2>
                             <div className="mt-6 flex justify-between border-b border-stone-300 pb-4 text-sm">
                                 <span className="text-stone-600">Subtotal</span>
-                                <span className="font-medium tabular-nums">{formatPrice(subtotal)}</span>
+                                <span className="font-medium tabular-nums">{formatInr(subtotal)}</span>
                             </div>
                             <p className="mt-4 text-xs leading-5 text-stone-500">Shipping and taxes are calculated at checkout.</p>
                             <Link

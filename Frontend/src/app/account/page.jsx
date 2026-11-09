@@ -7,8 +7,7 @@ import { useForm } from "react-hook-form";
 import Header from "../component/common/Header";
 import { useAuth } from "../services/AuthProvider";
 import { apiRequest } from "../services/api";
-
-const money = (cents) => `$${(cents / 100).toFixed(2)}`;
+import { formatInrPaise } from "../services/currency";
 
 export default function AccountPage() {
     const { user, loading, signOut, updateProfile } = useAuth();
@@ -106,7 +105,7 @@ export default function AccountPage() {
                                                     <p className="mt-1 text-sm text-stone-500">{new Date(order.createdAt).toLocaleDateString()} · {order.items.length} {order.items.length === 1 ? "item" : "items"}</p>
                                                 </div>
                                                 <div className="text-right">
-                                                    <p className="font-medium">{money(order.totalCents)}</p>
+                                                    <p className="font-medium">{formatInrPaise(order.totalCents)}</p>
                                                     <p className="mt-1 text-xs capitalize text-stone-500">{order.status}</p>
                                                 </div>
                                             </article>
