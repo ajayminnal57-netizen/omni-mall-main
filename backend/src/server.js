@@ -1,11 +1,8 @@
 import app from "./app.js";
-import { connectDatabase } from "./config/database.js";
 import { env } from "./config/env.js";
 
-try {
-  await connectDatabase();
-  app.listen(env.port, () => console.info(`Omni Mall API listening on port ${env.port}.`));
-} catch (error) {
-  console.error("Unable to start the API:", error.message);
+const server = app.listen(env.port, () => console.info(`Omni Mall API listening on port ${env.port}.`));
+server.on("error", (error) => {
+  console.error("Omni Mall API failed to listen:", error.message);
   process.exitCode = 1;
-}
+});

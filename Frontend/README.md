@@ -13,7 +13,7 @@ The frontend runs at [http://localhost:3000](http://localhost:3000). Configure a
 
 ### API URL
 
-The frontend defaults to `http://localhost:4000/api/v1`. Set `NEXT_PUBLIC_API_URL` in `.env.local` to use another API origin.
+The storefront fetches the complete product catalog and product details from [DummyJSON](https://dummyjson.com/products). Authentication, carts, wishlists, checkout, and admin APIs use the backend at `http://localhost:4000/api/v1` by default. Set `NEXT_PUBLIC_API_URL` in `.env.local` to use another backend origin.
 
 ### Checkout
 

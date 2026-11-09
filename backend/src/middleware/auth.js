@@ -1,7 +1,7 @@
 import jwt from "jsonwebtoken";
 import { env } from "../config/env.js";
 import AppError from "../utils/AppError.js";
-import User from "../models/User.js";
+import { readStore } from "../services/jsonStore.js";
 
 const tokenFromRequest = (req) => {
   const authorization = req.get("authorization");
@@ -15,7 +15,8 @@ export const protect = async (req, _res, next) => {
 
   try {
     const payload = jwt.verify(token, env.jwtSecret);
-    const user = await User.findById(payload.sub);
+    const record = readStore().users.find((item) => item._id === payload.sub);
+    const user = record ? { ...record, id: record._id } : null;
     if (!user || !user.isActive) throw new AppError(401, "The session is no longer valid.");
     req.user = user;
     return next();
@@ -33,7 +34,7 @@ export const requireRole = (...roles) => (req, _res, next) => {
 };
 
 export const createToken = (user) => jwt.sign(
-  { sub: user.id, role: user.role },
+  { sub: user.id ?? user._id, role: user.role },
   env.jwtSecret,
   { expiresIn: env.jwtExpiresIn, algorithm: "HS256" },
 );

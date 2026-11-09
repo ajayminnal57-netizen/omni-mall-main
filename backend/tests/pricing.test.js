@@ -11,7 +11,7 @@ const product = {
   isActive: true,
 };
 
-test("calculates authoritative totals from database product prices", () => {
+test("calculates authoritative totals from JSON catalog product prices", () => {
   const totals = calculateOrderTotals(
     [{ productId: "product-1", quantity: 2 }],
     [product],

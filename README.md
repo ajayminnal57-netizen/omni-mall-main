@@ -1,11 +1,10 @@
 # Omni Mall
 
-Omni Mall is a Next.js storefront backed by an Express API and MongoDB. The API owns product data, customer accounts, carts, wishlists, stock, and order totals. Checkout records an order but does not collect payment.
+Omni Mall is a Next.js storefront backed by an Express API. The storefront loads its full product catalog from DummyJSON; the API uses a local JSON file for customer accounts, carts, wishlists, stock, and order data. Checkout records an order but does not collect payment.
 
 ## Requirements
 
 - Node.js 20 or newer
-- MongoDB 6 or newer (local or hosted)
 
 ## Run locally
 
@@ -17,16 +16,16 @@ Omni Mall is a Next.js storefront backed by an Express API and MongoDB. The API 
 	Copy-Item .env.example .env
 	```
 
-	Set `MONGODB_URI` and a random `JWT_SECRET` of at least 32 characters in `backend/.env`. To create an admin during seeding, set `ADMIN_USERNAME` (defaults to `admin`), a unique `ADMIN_EMAIL`, and an `ADMIN_PASSWORD` of at least 8 characters; admin credentials are optional for catalog-only seeding.
+	Set a random `JWT_SECRET` of at least 32 characters in `backend/.env`. To create an admin account, set `ADMIN_USERNAME` (defaults to `admin`), a unique `ADMIN_EMAIL`, and an `ADMIN_PASSWORD` of at least 8 characters.
 
-2. With MongoDB running, import the starter catalog and, if configured, create the admin account:
+2. The API's JSON store is `backend/data/store.json`. Optionally create the admin account from the environment settings:
 
 	```powershell
 	cd backend
 	npm run seed
 	```
 
-	The seed command imports the current catalog from DummyJSON only when the local product collection is empty. The app itself does not fetch catalog data from DummyJSON.
+	The seed command does not connect to MongoDB or fetch external data. The API's local user, cart, wishlist, and order data are stored in the JSON file. The storefront retrieves its product catalog directly from DummyJSON.
 
 3. Start the API in one terminal:
 
@@ -42,7 +41,7 @@ Omni Mall is a Next.js storefront backed by an Express API and MongoDB. The API 
 	npm run dev
 	```
 
-	The default API URL is `http://localhost:4000/api/v1`. Set `NEXT_PUBLIC_API_URL` in `Frontend/.env.local` to override it. `FRONTEND_ORIGIN` on the backend must contain the allowed frontend origin or a comma-separated list of local origins.
+	The default API URL is `http://localhost:4000/api/v1`. Set `NEXT_PUBLIC_API_URL` in `Frontend/.env.local` to override it. `FRONTEND_ORIGIN` on the backend must contain the allowed frontend origin or a comma-separated list of local origins. Data changes are written back to `backend/data/store.json`; run one API process at a time.
 
 ## API
 
@@ -64,9 +63,8 @@ All routes are prefixed with `/api/v1`. Successful responses use `{ "success": t
 | GET, POST | `/orders/:id`, `/orders/:id/cancel` | Customer | Read or cancel a pending order |
 | GET, POST, PATCH | `/admin/summary`, `/admin/products*`, `/admin/categories*`, `/admin/orders*` | Admin | Catalog and order management |
 
-Authentication uses an HttpOnly, SameSite=Strict JWT cookie; Bearer tokens are also accepted by the API. Passwords are bcrypt-hashed. Admin access is assigned only by the seed process or trusted database administration, never by signup input. API rate limits, Helmet, CORS, Zod request validation, role checks, and centralized error responses are enabled.
+Authentication uses an HttpOnly, SameSite=Strict JWT cookie; bearer tokens are also accepted by the API. Passwords are bcrypt-hashed. Admin access is assigned only by the seed process, never by signup input. API rate limits, Helmet, CORS, Zod request validation, role checks, and centralized error responses are enabled.
 
 ## Tests
 
-Run backend unit and API contract tests with `cd backend; npm test`. They do not require MongoDB. Database connectivity and seeded authenticated checkout require a configured MongoDB instance.
-
+Run backend unit and API contract tests with `cd backend; npm test`. The API and tests do not require MongoDB.

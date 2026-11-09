@@ -1,54 +1,56 @@
-import Category from "../models/Category.js";
-import Product from "../models/Product.js";
+import { readStore } from "./jsonStore.js";
 
-const productFields = "title description brand category price stock thumbnail images rating discountPercentage warrantyInformation shippingInformation availabilityStatus reviews isActive createdAt updatedAt";
+const compareNewest = (left, right) => new Date(right.createdAt) - new Date(left.createdAt);
 
-export const serializeProduct = (product) => {
-  const value = typeof product.toObject === "function" ? product.toObject() : product;
-  return {
-    ...value,
-    id: String(value._id),
-    category: value.category?.slug ?? value.category,
-  };
-};
+export const serializeProduct = (product) => ({
+  ...product,
+  id: String(product._id),
+});
 
 export const listProducts = async (query) => {
   const page = Number(query.page ?? 1);
   const limit = Number(query.limit ?? 100);
-  const filter = { isActive: true };
-  if (query.category) {
-    const category = await Category.findOne({ slug: query.category, isActive: true }).select("_id");
-    if (!category) return { products: [], pagination: { page, limit, total: 0, pages: 0 } };
-    filter.category = category._id;
-  }
-  if (query.minPrice !== undefined || query.maxPrice !== undefined) {
-    filter.price = {};
-    if (query.minPrice !== undefined) filter.price.$gte = Number(query.minPrice);
-    if (query.maxPrice !== undefined) filter.price.$lte = Number(query.maxPrice);
-  }
-  if (query.q) filter.$text = { $search: query.q };
+  const { categories, products } = readStore();
+  const category = query.category
+    ? categories.find((item) => item.slug === query.category && item.isActive)
+    : null;
 
-  const sortMap = {
-    featured: { rating: -1, createdAt: -1 },
-    "price-low": { price: 1 },
-    "price-high": { price: -1 },
-    rating: { rating: -1 },
-    newest: { createdAt: -1 },
+  if (query.category && !category) {
+    return { products: [], pagination: { page, limit, total: 0, pages: 0 } };
+  }
+
+  const search = query.q?.toLocaleLowerCase();
+  const filtered = products.filter((product) => (
+    product.isActive
+    && (!category || product.category === category.slug)
+    && (query.minPrice === undefined || product.price >= Number(query.minPrice))
+    && (query.maxPrice === undefined || product.price <= Number(query.maxPrice))
+    && (!search || [product.title, product.description, product.brand]
+      .some((value) => value.toLocaleLowerCase().includes(search)))
+  ));
+
+  const comparators = {
+    featured: (left, right) => right.rating - left.rating || compareNewest(left, right),
+    "price-low": (left, right) => left.price - right.price,
+    "price-high": (left, right) => right.price - left.price,
+    rating: (left, right) => right.rating - left.rating,
+    newest: compareNewest,
   };
-  const [records, total] = await Promise.all([
-    Product.find(filter).select(productFields).populate("category", "slug").sort(sortMap[query.sort] ?? sortMap.featured).skip((page - 1) * limit).limit(limit).lean(),
-    Product.countDocuments(filter),
-  ]);
+  filtered.sort(comparators[query.sort] ?? comparators.featured);
+  const start = (page - 1) * limit;
+  const records = filtered.slice(start, start + limit);
 
   return {
     products: records.map(serializeProduct),
-    pagination: { page, limit, total, pages: Math.ceil(total / limit) },
+    pagination: { page, limit, total: filtered.length, pages: Math.ceil(filtered.length / limit) },
   };
 };
 
 export const getProductById = async (id) => {
-  const product = await Product.findOne({ _id: id, isActive: true }).select(productFields).populate("category", "slug").lean();
+  const product = readStore().products.find((item) => item._id === id && item.isActive);
   return product ? serializeProduct(product) : null;
 };
 
-export const listCategories = () => Category.find({ isActive: true }).sort({ name: 1 }).lean();
+export const listCategories = async () => readStore().categories
+  .filter((category) => category.isActive)
+  .toSorted((left, right) => left.name.localeCompare(right.name));

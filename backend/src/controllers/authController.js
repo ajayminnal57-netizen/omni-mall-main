@@ -1,12 +1,13 @@
 import { asyncHandler } from "../utils/asyncHandler.js";
 import { sendSuccess } from "../utils/response.js";
-import { authenticateUser, registerUser } from "../services/authService.js";
+import { authenticateUser, registerUser, serializeUser } from "../services/authService.js";
 import { clearAuthCookie, createToken, setAuthCookie } from "../middleware/auth.js";
 import AppError from "../utils/AppError.js";
+import { updateStore } from "../services/jsonStore.js";
 
 const issueSession = (res, user, status = 200) => {
   setAuthCookie(res, createToken(user));
-  return sendSuccess(res, { user: user.toJSON() }, status);
+  return sendSuccess(res, { user: serializeUser(user) }, status);
 };
 
 export const register = asyncHandler(async (req, res) => issueSession(
@@ -25,13 +26,21 @@ export const logout = (_req, res) => {
   return sendSuccess(res, { message: "Logged out." });
 };
 
-export const currentUser = (req, res) => sendSuccess(res, { user: req.user.toJSON() });
+export const currentUser = (req, res) => sendSuccess(res, { user: serializeUser(req.user) });
 
 export const updateProfile = asyncHandler(async (req, res) => {
-  const user = req.user;
-  user.username = req.validated.body.username;
-  await user.save();
-  return sendSuccess(res, { user: user.toJSON() });
+  const user = updateStore((store) => {
+    const record = store.users.find((item) => item._id === req.user.id);
+    if (!record) throw new AppError(401, "The session is no longer valid.");
+    const username = req.validated.body.username.toLowerCase();
+    if (store.users.some((item) => item._id !== record._id && item.username === username)) {
+      throw new AppError(409, "A user with that username already exists.");
+    }
+    record.username = username;
+    record.updatedAt = new Date().toISOString();
+    return record;
+  });
+  return sendSuccess(res, { user: serializeUser(user) });
 });
 
 export const requireAuthenticatedIdentity = (req, _res, next) => {

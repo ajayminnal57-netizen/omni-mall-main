@@ -1,0 +1,240 @@
+{
+  "categories": [
+    {
+      "_id": "100000000000000000000001",
+      "name": "Home Decor",
+      "slug": "home-decor",
+      "description": "Decorative pieces for every room.",
+      "isActive": true,
+      "createdAt": "2026-10-01T00:00:00.000Z",
+      "updatedAt": "2026-10-01T00:00:00.000Z"
+    },
+    {
+      "_id": "100000000000000000000002",
+      "name": "Kitchen",
+      "slug": "kitchen",
+      "description": "Useful essentials for your kitchen.",
+      "isActive": true,
+      "createdAt": "2026-10-01T00:00:00.000Z",
+      "updatedAt": "2026-10-01T00:00:00.000Z"
+    },
+    {
+      "_id": "100000000000000000000003",
+      "name": "Furniture",
+      "slug": "furniture",
+      "description": "Comfortable furniture for home and office.",
+      "isActive": true,
+      "createdAt": "2026-10-01T00:00:00.000Z",
+      "updatedAt": "2026-10-01T00:00:00.000Z"
+    },
+    {
+      "_id": "100000000000000000000004",
+      "name": "Beauty",
+      "slug": "beauty",
+      "description": "Everyday personal care and beauty.",
+      "isActive": true,
+      "createdAt": "2026-10-01T00:00:00.000Z",
+      "updatedAt": "2026-10-01T00:00:00.000Z"
+    }
+  ],
+  "products": [
+    {
+      "_id": "200000000000000000000001",
+      "title": "Ceramic Table Vase",
+      "description": "A handcrafted ceramic vase with a clean, modern silhouette.",
+      "brand": "Omni Home",
+      "category": "home-decor",
+      "price": 28.5,
+      "stock": 24,
+      "thumbnail": "https://images.unsplash.com/photo-1578500494198-246f612d3b3d?auto=format&fit=crop&w=900&q=80",
+      "images": [
+        "https://images.unsplash.com/photo-1578500494198-246f612d3b3d?auto=format&fit=crop&w=900&q=80"
+      ],
+      "rating": 4.7,
+      "discountPercentage": 10,
+      "warrantyInformation": "6 months warranty",
+      "shippingInformation": "Ships in 2-3 business days",
+      "availabilityStatus": "In Stock",
+      "reviews": [],
+      "isActive": true,
+      "createdAt": "2026-10-01T00:00:00.000Z",
+      "updatedAt": "2026-10-01T00:00:00.000Z"
+    },
+    {
+      "_id": "200000000000000000000002",
+      "title": "Woven Storage Basket",
+      "description": "A lightweight woven basket for keeping everyday essentials organized.",
+      "brand": "Omni Home",
+      "category": "home-decor",
+      "price": 34,
+      "stock": 18,
+      "thumbnail": "https://images.unsplash.com/photo-1593085260707-5377ba37f868?auto=format&fit=crop&w=900&q=80",
+      "images": [
+        "https://images.unsplash.com/photo-1593085260707-5377ba37f868?auto=format&fit=crop&w=900&q=80"
+      ],
+      "rating": 4.5,
+      "discountPercentage": 0,
+      "warrantyInformation": "",
+      "shippingInformation": "Ships in 2-3 business days",
+      "availabilityStatus": "In Stock",
+      "reviews": [],
+      "isActive": true,
+      "createdAt": "2026-10-01T00:00:00.000Z",
+      "updatedAt": "2026-10-01T00:00:00.000Z"
+    },
+    {
+      "_id": "200000000000000000000003",
+      "title": "Stoneware Dinner Set",
+      "description": "A durable stoneware dinner set designed for daily meals and special occasions.",
+      "brand": "North Table",
+      "category": "kitchen",
+      "price": 68,
+      "stock": 12,
+      "thumbnail": "https://images.unsplash.com/photo-1603199506016-b9a594b593c0?auto=format&fit=crop&w=900&q=80",
+      "images": [
+        "https://images.unsplash.com/photo-1603199506016-b9a594b593c0?auto=format&fit=crop&w=900&q=80"
+      ],
+      "rating": 4.8,
+      "discountPercentage": 5,
+      "warrantyInformation": "1 year warranty",
+      "shippingInformation": "Ships in 3-5 business days",
+      "availabilityStatus": "In Stock",
+      "reviews": [],
+      "isActive": true,
+      "createdAt": "2026-10-01T00:00:00.000Z",
+      "updatedAt": "2026-10-01T00:00:00.000Z"
+    },
+    {
+      "_id": "200000000000000000000004",
+      "title": "Pour-Over Coffee Maker",
+      "description": "A compact glass coffee maker for a smooth, balanced pour-over brew.",
+      "brand": "Brew Works",
+      "category": "kitchen",
+      "price": 42.99,
+      "stock": 20,
+      "thumbnail": "https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?auto=format&fit=crop&w=900&q=80",
+      "images": [
+        "https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?auto=format&fit=crop&w=900&q=80"
+      ],
+      "rating": 4.6,
+      "discountPercentage": 0,
+      "warrantyInformation": "1 year warranty",
+      "shippingInformation": "Ships in 2-3 business days",
+      "availabilityStatus": "In Stock",
+      "reviews": [],
+      "isActive": true,
+      "createdAt": "2026-10-01T00:00:00.000Z",
+      "updatedAt": "2026-10-01T00:00:00.000Z"
+    },
+    {
+      "_id": "200000000000000000000005",
+      "title": "Lounge Accent Chair",
+      "description": "A supportive upholstered accent chair with a solid wood frame.",
+      "brand": "Omni Living",
+      "category": "furniture",
+      "price": 245,
+      "stock": 7,
+      "thumbnail": "https://images.unsplash.com/photo-1567538096630-e0c55bd6374c?auto=format&fit=crop&w=900&q=80",
+      "images": [
+        "https://images.unsplash.com/photo-1567538096630-e0c55bd6374c?auto=format&fit=crop&w=900&q=80"
+      ],
+      "rating": 4.9,
+      "discountPercentage": 12,
+      "warrantyInformation": "2 years warranty",
+      "shippingInformation": "Ships in 5-7 business days",
+      "availabilityStatus": "In Stock",
+      "reviews": [],
+      "isActive": true,
+      "createdAt": "2026-10-01T00:00:00.000Z",
+      "updatedAt": "2026-10-01T00:00:00.000Z"
+    },
+    {
+      "_id": "200000000000000000000006",
+      "title": "Oak Side Table",
+      "description": "A minimal solid oak side table with a smooth, natural finish.",
+      "brand": "Omni Living",
+      "category": "furniture",
+      "price": 119,
+      "stock": 9,
+      "thumbnail": "https://images.unsplash.com/photo-1499933374294-4584851497cc?auto=format&fit=crop&w=900&q=80",
+      "images": [
+        "https://images.unsplash.com/photo-1499933374294-4584851497cc?auto=format&fit=crop&w=900&q=80"
+      ],
+      "rating": 4.4,
+      "discountPercentage": 0,
+      "warrantyInformation": "2 years warranty",
+      "shippingInformation": "Ships in 5-7 business days",
+      "availabilityStatus": "In Stock",
+      "reviews": [],
+      "isActive": true,
+      "createdAt": "2026-10-01T00:00:00.000Z",
+      "updatedAt": "2026-10-01T00:00:00.000Z"
+    },
+    {
+      "_id": "200000000000000000000007",
+      "title": "Daily Face Care Set",
+      "description": "A gentle daily skincare set with cleanser, moisturizer, and face serum.",
+      "brand": "Clear Day",
+      "category": "beauty",
+      "price": 39.5,
+      "stock": 30,
+      "thumbnail": "https://images.unsplash.com/photo-1608248543803-ba4f8c70ae0b?auto=format&fit=crop&w=900&q=80",
+      "images": [
+        "https://images.unsplash.com/photo-1608248543803-ba4f8c70ae0b?auto=format&fit=crop&w=900&q=80"
+      ],
+      "rating": 4.3,
+      "discountPercentage": 8,
+      "warrantyInformation": "",
+      "shippingInformation": "Ships in 1-2 business days",
+      "availabilityStatus": "In Stock",
+      "reviews": [],
+      "isActive": true,
+      "createdAt": "2026-10-01T00:00:00.000Z",
+      "updatedAt": "2026-10-01T00:00:00.000Z"
+    },
+    {
+      "_id": "200000000000000000000008",
+      "title": "Botanical Hand Cream",
+      "description": "A nourishing hand cream made for comfortable everyday use.",
+      "brand": "Clear Day",
+      "category": "beauty",
+      "price": 14.99,
+      "stock": 45,
+      "thumbnail": "https://images.unsplash.com/photo-1601049541289-9b1b7bbbfe19?auto=format&fit=crop&w=900&q=80",
+      "images": [
+        "https://images.unsplash.com/photo-1601049541289-9b1b7bbbfe19?auto=format&fit=crop&w=900&q=80"
+      ],
+      "rating": 4.2,
+      "discountPercentage": 0,
+      "warrantyInformation": "",
+      "shippingInformation": "Ships in 1-2 business days",
+      "availabilityStatus": "In Stock",
+      "reviews": [],
+      "isActive": true,
+      "createdAt": "2026-10-01T00:00:00.000Z",
+      "updatedAt": "2026-10-01T00:00:00.000Z"
+    }
+  ],
+  "users": [
+    {
+      "_id": "8318d9da35c9fa7f9d73cd4e",
+      "username": "raj",
+      "email": "rg631581@gmail.com",
+      "passwordHash": "$2b$12$SQ7wZl//uKOOSaVMvJ0qYuM8YsnEQbr8do0ovwAHI7c/2S9tdzrJW",
+      "role": "customer",
+      "isActive": true,
+      "createdAt": "2026-11-03T06:38:13.971Z",
+      "updatedAt": "2026-11-03T06:38:32.781Z"
+    }
+  ],
+  "carts": [
+    {
+      "user": "8318d9da35c9fa7f9d73cd4e",
+      "items": [],
+      "createdAt": "2026-11-03T06:39:06.602Z",
+      "updatedAt": "2026-11-03T06:46:20.026Z"
+    }
+  ],
+  "wishlists": [],
+  "orders": []
+}

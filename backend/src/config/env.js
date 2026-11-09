@@ -3,7 +3,7 @@ import { fileURLToPath } from "node:url";
 
 dotenv.config({ path: fileURLToPath(new URL("../../.env", import.meta.url)) });
 
-const required = ["MONGODB_URI", "JWT_SECRET"];
+const required = ["JWT_SECRET"];
 for (const key of required) {
   if (!process.env[key]) throw new Error(`${key} must be configured.`);
 }
@@ -15,8 +15,6 @@ export const env = {
   nodeEnv: process.env.NODE_ENV ?? "development",
   port: Number(process.env.PORT ?? 4000),
   frontendOrigin: process.env.FRONTEND_ORIGIN ?? "http://localhost:3000",
-  mongoUri: process.env.MONGODB_URI,
-  mongoDatabase: process.env.MONGODB_DB_NAME ?? "omni_mall",
   jwtSecret: process.env.JWT_SECRET,
   jwtExpiresIn: process.env.JWT_EXPIRES_IN ?? "7d",
   cookieName: process.env.COOKIE_NAME ?? "omni_mall_token",
